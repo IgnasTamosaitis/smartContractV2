@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Agreement DApp</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏠 Nekilnojamojo Turto Nuomos DApp</h1>
+            <div id="connectionStatus" class="status disconnected">
+                <span id="statusText">Not Connected</span>
+                <button id="connectBtn" class="btn btn-primary">Connect MetaMask</button>
+            </div>
+        </header>
+
+        <div id="accountInfo" class="hidden">
+            <div class="card">
+                <h3>📊 Account Info</h3>
+                <p><strong>Address:</strong> <span id="accountAddress"></span></p>
+                <p><strong>Balance:</strong> <span id="accountBalance"></span> ETH</p>
+                <p><strong>Network:</strong> <span id="networkName"></span></p>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="create">Create Rental</button>
+            <button class="tab-btn" data-tab="manage">Manage Rental</button>
+            <button class="tab-btn" data-tab="view">View Contract</button>
+        </div>
+
+        <!-- Create Rental Tab -->
+        <div id="createTab" class="tab-content active">
+            <div class="card">
+                <h2>Create New Rental Agreement</h2>
+                <p class="description">As a landlord, create a new rental contract</p>
+                
+                <form id="createRentalForm">
+                    <div class="form-group">
+                        <label>Tenant Address:</label>
+                        <input type="text" id="tenantAddress" placeholder="0x..." required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Arbiter Address:</label>
+                        <input type="text" id="arbiterAddress" placeholder="0x..." required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Monthly Rent (ETH):</label>
+                        <input type="number" id="monthlyRent" step="0.001" placeholder="0.1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Deposit (ETH):</label>
+                        <input type="number" id="deposit" step="0.001" placeholder="0.3" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Duration (months):</label>
+                        <input type="number" id="duration" placeholder="6" min="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Property Address:</label>
+                        <input type="text" id="propertyAddress" placeholder="Gedimino pr. 1, Vilnius" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success">Create Contract</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Manage Rental Tab -->
+        <div id="manageTab" class="tab-content">
+            <div class="card">
+                <h2>Manage Rental Contract</h2>
+                <p class="deployed-info">
+                    <strong>✅ Deployed:</strong> 
+                    <a href="https://sepolia.etherscan.io/address/0xeF9D744ADc74eeC3E8C81F598A0FA93d36CC4515" target="_blank">
+                        0xeF9D744ADc74eeC3E8C81F598A0FA93d36CC4515
+                    </a>
+                </p>
+                <p class="description">📝 <strong>Step 1:</strong> Connect MetaMask → <strong>Step 2:</strong> Click "Load Contract"</p>
+                
+                <div class="form-group">
+                    <label>Contract Address:</label>
+                    <input type="text" id="contractAddress" placeholder="0x..." value="0xeF9D744ADc74eeC3E8C81F598A0FA93d36CC4515">
+                    <button id="loadContractBtn" class="btn btn-primary">Load Contract</button>
+                </div>
+                
+                <div id="contractActions" class="hidden">
+                    <hr>
+                    
+                    <!-- Tenant Actions -->
+                    <div class="action-section">
+                        <h3>👤 Tenant Actions</h3>
+                        <button id="payDepositBtn" class="btn btn-warning">Pay Deposit + First Rent</button>
+                        <button id="payRentBtn" class="btn btn-info">Pay Monthly Rent</button>
+                    </div>
+                    
+                    <!-- Landlord Actions -->
+                    <div class="action-section">
+                        <h3>🏢 Landlord Actions</h3>
+                        <button id="completeRentalBtn" class="btn btn-success">Complete Rental</button>
+                        <button id="returnDepositBtn" class="btn btn-success">Return Deposit</button>
+                        <button id="cancelRentalBtn" class="btn btn-danger">Cancel Contract</button>
+                    </div>
+                    
+                    <!-- Dispute Actions -->
+                    <div class="action-section">
+                        <h3>⚖️ Dispute Management</h3>
+                        <div class="form-group">
+                            <label>Dispute Reason:</label>
+                            <input type="text" id="disputeReason" placeholder="Property damage, etc...">
+                            <button id="raiseDisputeBtn" class="btn btn-warning">Raise Dispute</button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Tenant Percentage (0-100):</label>
+                            <input type="number" id="tenantPercentage" min="0" max="100" placeholder="70">
+                            <button id="resolveDisputeBtn" class="btn btn-primary">Resolve Dispute (Arbiter)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View Contract Tab -->
+        <div id="viewTab" class="tab-content">
+            <div class="card">
+                <h2>View Contract Details</h2>
+                <p class="deployed-info">
+                    <strong>✅ Deployed Contract:</strong> 
+                    <a href="https://sepolia.etherscan.io/address/0xeF9D744ADc74eeC3E8C81F598A0FA93d36CC4515" target="_blank">
+                        0xeF9D744ADc74eeC3E8C81F598A0FA93d36CC4515
+                    </a>
+                </p>
+                
+                <div class="form-group">
+                    <label>Contract Address:</label>
+                    <input type="text" id="viewContractAddress" placeholder="0x..." value="0xeF9D744ADc74eeC3E8C81F598A0FA93d36CC4515">
+                    <button id="viewContractBtn" class="btn btn-primary">View Details</button>
+                </div>
+                
+                <div id="contractDetails" class="hidden">
+                    <hr>
+                    <h3>📋 Contract Information</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Landlord:</label>
+                            <span id="detailLandlord"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Tenant:</label>
+                            <span id="detailTenant"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Arbiter:</label>
+                            <span id="detailArbiter"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Monthly Rent:</label>
+                            <span id="detailMonthlyRent"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Deposit:</label>
+                            <span id="detailDeposit"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Property Address:</label>
+                            <span id="detailPropertyAddress"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Start Date:</label>
+                            <span id="detailStartDate"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>End Date:</label>
+                            <span id="detailEndDate"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>State:</label>
+                            <span id="detailState" class="badge"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Deposit Returned:</label>
+                            <span id="detailDepositReturned"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Contract Balance:</label>
+                            <span id="detailBalance"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Days Until End:</label>
+                            <span id="detailDaysLeft"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="notifications"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.10.3/dist/web3.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
