@@ -8,7 +8,7 @@ Decentralizuota aplikacija, kuri įgyvendina nekilnojamojo turto nuomos sutartį
 - **ginčo sprendimu per arbitrą** (3-ioji šalis),
 - **Front-End DApp** (MetaMask + Web3.js), leidžiančia valdyti sutartį.
 
-> Verslo modelis pasirinktas **skirtingas nuo pavyzdžio** (ne prekių pardavimas, o ilgalaikė nuoma su periodiniais mokėjimais ir ginčais).
+Verslo modelis pasirinktas **skirtingas nuo pavyzdžio** (ne prekių pardavimas, o ilgalaikė nuoma su periodiniais mokėjimais ir ginčais).
 
 ---
 
@@ -24,7 +24,7 @@ Decentralizuota aplikacija, kuri įgyvendina nekilnojamojo turto nuomos sutartį
 8. Sukurtas **Front-End DApp**, komunikuojantis su smart contract.
 ---
 
-## Pagrindiniai dalyviai (Actors)
+## Pagrindiniai dalyviai
 
 ### 1. Nuomotojas (Landlord)
 **Rolė:** turto savininkas, sukuriantis sutartį ir valdantis uždarymą / užstatą.
@@ -508,12 +508,12 @@ Transakcija, kuria smart contract buvo sukurtas ir įrašytas į blockchain. Tai
 
 ## Sutarties Būsenos (States)
 
-- **CREATED** (0) - Sutartis sukurta, laukiama užstato
-- **ACTIVE** (1) - Sutartis aktyvi, vyksta nuoma
-- **PAYMENT_PENDING** (2) - Laukiama mokėjimo (rezervuota)
-- **COMPLETED** (3) - Nuoma baigta sėkmingai
-- **DISPUTED** (4) - Ginčas tarp šalių
-- **CANCELLED** (5) - Sutartis atšaukta
+1. **CREATED** - Sutartis sukurta, laukiama užstato
+2. **ACTIVE** - Sutartis aktyvi, vyksta nuoma
+3. **PAYMENT_PENDING** - Laukiama mokėjimo (rezervuota)
+4. **COMPLETED** - Nuoma baigta sėkmingai
+5. **DISPUTED** - Ginčas tarp šalių
+6.  **CANCELLED** - Sutartis atšaukta
 
 ## Pagrindiniai Pranašumai
 
