@@ -1,29 +1,29 @@
-# 🏠 Nekilnojamojo Turto Nuomos Išmanioji Sutartis
+# Nekilnojamojo Turto Nuomos Išmanioji Sutartis
 
-## 📋 Projekto Aprašymas
+## Projekto Aprašymas
 
 Ši decentralizuota aplikacija įgyvendina **nekilnojamojo turto nuomos valdymo sistemą** naudojant Ethereum blockchain ir išmaniąją sutartį (smart contract). Sistema užtikrina skaidrų ir saugų nuomos procesą tarp nuomotojo, nuomininko ir arbitro.
 
 ---
 
-## 🎯 Verslo Modelis
+## Verslo Modelis
 
 ### Kodėl Šis Modelis Skiriasi nuo Pavyzdžio?
 
 **Pavyzdinis modelis** (prekių pardavimas):
 
-- ✅ Vienkartinė transakcija
-- ✅ Dviejų šalių sandoris (pirkėjas, pardavėjas)
-- ✅ Momentinis pinigų perdavimas
+-  Vienkartinė transakcija
+-  Dviejų šalių sandoris (pirkėjas, pardavėjas)
+-  Momentinis pinigų perdavimas
 
 **Mūsų modelis** (nekilnojamojo turto nuoma):
 
-- 🔄 **Ilgalaikis santykis** su periodiniais mokėjimais
-- 👥 **Trys šalys**: nuomotojas, nuomininkas, arbitras
-- 💰 **Užstatas** kaip saugumo garantija
-- ⚖️ **Ginčų sprendimo mechanizmas**
-- 📅 **Laiko valdymas** (nuomos trukmė, mokėjimo intervalai)
-- 🔒 **Valstybių mašina** su 6 būsenomis (CREATED, ACTIVE, PAYMENT_PENDING, COMPLETED, DISPUTED, CANCELLED)
+-  **Ilgalaikis santykis** su periodiniais mokėjimais
+-  **Trys šalys**: nuomotojas, nuomininkas, arbitras
+-  **Užstatas** kaip saugumo garantija
+-  **Ginčų sprendimo mechanizmas**
+-  **Laiko valdymas** (nuomos trukmė, mokėjimo intervalai)
+-  **Valstybių mašina** su 6 būsenomis (CREATED, ACTIVE, PAYMENT_PENDING, COMPLETED, DISPUTED, CANCELLED)
 
 ### Verslo Modelio Privalumai
 
@@ -35,24 +35,24 @@
 
 ---
 
-## 👥 Pagrindiniai Veikėjai (Actors)
+## Pagrindiniai Veikėjai (Actors)
 
-### 1. **Nuomotojas (Landlord)** 🏢
+### 1. **Nuomotojas (Landlord)**
 
 **Rolė:** Nekilnojamojo turto savininkas, kuris nori išnuomoti savo turtą.
 
 **Teisės ir Funkcijos:**
 
-- ✅ `constructor()` - Sukuria naują nuomos sutartį, nustato sąlygas
-- ✅ `completeRental()` - Užbaigia nuomą pasibaigus laikotarpiui
-- ✅ `returnDeposit()` - Grąžina užstatą nuomininkui (jei nėra pretenzijų)
-- ✅ `raiseDispute()` - Kelia ginčą dėl turto sugadinimo
-- ✅ `cancelRental()` - Atšaukia sutartį prieš jos pradžią
+- `constructor()` - Sukuria naują nuomos sutartį, nustato sąlygas
+- `completeRental()` - Užbaigia nuomą pasibaigus laikotarpiui
+- `returnDeposit()` - Grąžina užstatą nuomininkui (jei nėra pretenzijų)
+- `raiseDispute()` - Kelia ginčą dėl turto sugadinimo
+- `cancelRental()` - Atšaukia sutartį prieš jos pradžią
 
 **Finansiniai Srautai:**
 
-- 💰 **Gauna:** Mėnesinius nuomos mokėjimus (automatiškai)
-- 💰 **Gali gauti:** Dalį užstato (ginčo atveju)
+- **Gauna:** Mėnesinius nuomos mokėjimus (automatiškai)
+- **Gali gauti:** Dalį užstato (ginčo atveju)
 
 **Atsakomybės:**
 
@@ -61,21 +61,21 @@
 
 ---
 
-### 2. **Nuomininkas (Tenant)** 👤
+### 2. **Nuomininkas (Tenant)**
 
 **Rolė:** Asmuo ar įmonė, kuri nori išsinuomoti nekilnojamąjį turtą.
 
 **Teisės ir Funkcijos:**
 
-- ✅ `payDepositAndFirstRent()` - Aktyvuoja sutartį, sumokėdamas užstatą + pirmą nuomą
-- ✅ `payMonthlyRent()` - Moka mėnesinę nuomą kas 25+ dienas
-- ✅ `completeRental()` - Gali užbaigti nuomą pasibaigus terminui
-- ✅ `raiseDispute()` - Kelia ginčą, jei nuomotojas nepagristai nesugrąžina užstato
+- `payDepositAndFirstRent()` - Aktyvuoja sutartį, sumokėdamas užstatą + pirmą nuomą
+- `payMonthlyRent()` - Moka mėnesinę nuomą kas 25+ dienas
+- `completeRental()` - Gali užbaigti nuomą pasibaigus terminui
+- `raiseDispute()` - Kelia ginčą, jei nuomotojas nepagristai nesugrąžina užstato
 
 **Finansiniai Srautai:**
 
-- 💸 **Moka:** Užstatą (vieną kartą) + mėnesinę nuomą (periodiškai)
-- 💰 **Gauna atgal:** Užstatą (pilną arba dalį)
+- **Moka:** Užstatą (vieną kartą) + mėnesinę nuomą (periodiškai)
+- **Gauna atgal:** Užstatą (pilną arba dalį)
 
 **Atsakomybės:**
 
@@ -84,19 +84,19 @@
 
 ---
 
-### 3. **Arbitras (Arbiter)** ⚖️
+### 3. **Arbitras (Arbiter)** 
 
 **Rolė:** Nepriklausomas trečiasis asmuo, sprendžiantis ginčus tarp nuomotojo ir nuomininko.
 
 **Teisės ir Funkcijos:**
 
-- ✅ `resolveDispute()` - Vienintelė funkcija - nusprendžia užstato paskirstymą
+- `resolveDispute()` - Vienintelė funkcija - nusprendžia užstato paskirstymą
 
 **Sprendimo Logika:**
 
-- 📊 Nustato procentinį užstato padalijimą (0-100%)
-- ⚖️ Pavyzdžiui: 70% nuomininkui (mažai žalos), 30% nuomotojui (kompensacija)
-- 🎯 Galimi variantai:
+- Nustato procentinį užstato padalijimą (0-100%)
+- Pavyzdžiui: 70% nuomininkui (mažai žalos), 30% nuomotojui (kompensacija)
+- Galimi variantai:
   - **100% nuomininkui** - jokios žalos, nuomotojas nepagrįstai laikė užstatą
   - **50/50** - abejotina situacija, kompromisas
   - **0% nuomininkui** - rimta žala, visas užstatas nuomotojui
@@ -111,10 +111,10 @@
 ### Veikėjų Sąveika
 
 ```
-┌─────────────┐         ┌──────────────┐         ┌────────────┐
-│ Nuomotojas  │────────▶│Smart Contract│◀────────│Nuomininkas │
-│ (Landlord)  │         │              │         │ (Tenant)   │
-└─────────────┘         └──────────────┘         └────────────┘
+┌─────────────┐          ┌──────────────┐          ┌────────────┐
+│ Nuomotojas  │────────▶ │Smart Contract│◀────────│Nuomininkas │
+│ (Landlord)  │          │              │          │ (Tenant)   │
+└─────────────┘          └──────────────┘          └────────────┘
                               ▲
                               │
                               │ (Ginčo atveju)
@@ -127,9 +127,9 @@
 
 ---
 
-## 🔄 Tipiški Verslo Scenarijai
+## Tipiški Verslo Scenarijai
 
-### 📊 Sutarties Būsenos (States)
+### Sutarties Būsenos (States)
 
 Smart contract naudoja **valstybių mašiną** (State Machine) su šešiomis būsenomis:
 
@@ -153,7 +153,7 @@ Smart contract naudoja **valstybių mašiną** (State Machine) su šešiomis bū
 
 ---
 
-### **Scenarijus 1: Sėkminga Nuoma (Happy Path)** ✅
+### **Scenarijus 1: Sėkminga Nuoma (Happy Path)**
 
 **Tikslas:** Nuomotojas sėkmingai išnuomoja turtą, nuomininkas moka laiku, sutartis baigiasi be ginčų.
 
@@ -195,13 +195,13 @@ Smart contract naudoja **valstybių mašiną** (State Machine) su šešiomis bū
 
 **Finansiniai Rezultatai:**
 
-- 💰 **Nuomotojas:** +0.06 ETH (6 mėn × 0.01 ETH)
-- 💸 **Nuomininkas:** -0.06 ETH (nuoma), +0.02 ETH (užstatas atgal)
-- ⚖️ **Arbitras:** 0 ETH (nedalyvavo)
+- **Nuomotojas:** +0.06 ETH (6 mėn × 0.01 ETH)
+- **Nuomininkas:** -0.06 ETH (nuoma), +0.02 ETH (užstatas atgal)
+- **Arbitras:** 0 ETH (nedalyvavo)
 
 ---
 
-### **Scenarijus 2: Nuoma su Ginču** ⚖️
+### **Scenarijus 2: Nuoma su Ginču** 
 
 **Tikslas:** Nuomos pabaigoje kyla ginčas dėl turto būklės, arbitras nusprendžia užstato paskirstymą.
 
@@ -214,7 +214,7 @@ Smart contract naudoja **valstybių mašiną** (State Machine) su šešiomis bū
    - **Pavyzdys:** Nuomotojas tvirtina: "Nuomininkas sugadino grindis"
    - Kviečia funkciją `raiseDispute("Damaged floors, repair cost 0.01 ETH")`
    - **Būsena:** `COMPLETED` → `DISPUTED`
-   - Užstatas (0.02 ETH) lieka užšaldytas contract'e 🔒
+   - Užstatas (0.02 ETH) lieka užšaldytas contract'e 
 
 6. **Ginčo Nagrinėjimas** (Arbitras)
 
@@ -233,13 +233,13 @@ Smart contract naudoja **valstybių mašiną** (State Machine) su šešiomis bū
 
 **Finansiniai Rezultatai:**
 
-- 💰 **Nuomotojas:** +0.06 ETH (nuoma) + 0.006 ETH (dalis užstato) = 0.066 ETH
-- 💸 **Nuomininkas:** -0.06 ETH (nuoma) + 0.014 ETH (dalis užstato) = -0.046 ETH
-- ⚖️ **Arbitras:** 0 ETH (arbitražas paprastai už mokėjimo sistema)
+- **Nuomotojas:** +0.06 ETH (nuoma) + 0.006 ETH (dalis užstato) = 0.066 ETH
+- **Nuomininkas:** -0.06 ETH (nuoma) + 0.014 ETH (dalis užstato) = -0.046 ETH
+- **Arbitras:** 0 ETH (arbitražas paprastai už mokėjimo sistema)
 
 ---
 
-### **Scenarijus 3: Sutarties Atšaukimas** 🚫
+### **Scenarijus 3: Sutarties Atšaukimas**
 
 **Tikslas:** Nuomotojas atsisako sutarties prieš jos pradžią.
 
@@ -265,7 +265,7 @@ Smart contract naudoja **valstybių mašiną** (State Machine) su šešiomis bū
 
 ---
 
-### **Scenarijus 4: Nuomininkas Nemoka Nuomos** ⚠️
+### **Scenarijus 4: Nuomininkas Nemoka Nuomos**
 
 **Tikslas:** Nuomininkas nustoja mokėti, nuomotojas gali pasinaudoti užstatu.
 
@@ -284,9 +284,9 @@ Smart contract naudoja **valstybių mašiną** (State Machine) su šešiomis bū
 
 ---
 
-## 📊 Sekų Diagramos (Sequence Diagrams)
+## Sekų Diagramos (Sequence Diagrams)
 
-### **1. Sėkmingos Nuomos Scenarijus (Happy Path)** ✅
+### **1. Sėkmingos Nuomos Scenarijus (Happy Path)**
 
 ```mermaid
 sequenceDiagram
@@ -301,7 +301,7 @@ sequenceDiagram
     SC->>SC: Validuoti parametrus (require checks)
     SC->>SC: Išsaugoti duomenis (rental struct)
     SC->>SC: State = CREATED
-    SC-->>L: ✅ Sutartis sukurta (contract address)
+    SC-->>L: Sutartis sukurta (contract address)
     deactivate SC
 
     Note over L,SC,T: PHASE 2: Sutarties Aktyvavimas
@@ -312,9 +312,9 @@ sequenceDiagram
     SC->>SC: Patikrinti: msg.value == deposit + monthlyRent
     SC->>SC: State = ACTIVE
     SC->>SC: Išsaugoti startDate = now
-    SC->>L: 💰 Transfer(monthlyRent) - pirmoji nuoma
-    SC->>SC: 🔒 Užstatas lieka contract'e
-    SC-->>T: ✅ Emit RentalActivated(startDate)
+    SC->>L: Transfer(monthlyRent) - pirmoji nuoma
+    SC->>SC: Užstatas lieka contract'e
+    SC-->>T: Emit RentalActivated(startDate)
     deactivate SC
 
     Note over L,SC,T: PHASE 3: Periodiniai Mokėjimai (6 mėnesius)
@@ -325,8 +325,8 @@ sequenceDiagram
         SC->>SC: Patikrinti: state == ACTIVE
         SC->>SC: Patikrinti: now >= lastPaymentDate + 25 days
         SC->>SC: Atnaujinti lastPaymentDate = now
-        SC->>L: 💰 Transfer(monthlyRent)
-        SC-->>T: ✅ Emit RentPaid(amount, date)
+        SC->>L: Transfer(monthlyRent)
+        SC-->>T: Emit RentPaid(amount, date)
         deactivate SC
     end
 
@@ -341,8 +341,8 @@ sequenceDiagram
     SC->>SC: Patikrinti: state == ACTIVE
     SC->>SC: Patikrinti: now >= endDate
     SC->>SC: State = COMPLETED
-    SC-->>L: ✅ Emit RentalCompleted(endDate)
-    SC-->>T: ✅ Emit RentalCompleted(endDate)
+    SC-->>L: Emit RentalCompleted(endDate)
+    SC-->>T: Emit RentalCompleted(endDate)
     deactivate SC
 
     Note over L,SC,T: PHASE 5: Užstato Grąžinimas (jei nėra pretenzijų)
@@ -352,11 +352,11 @@ sequenceDiagram
     SC->>SC: Patikrinti: state == COMPLETED
     SC->>SC: Patikrinti: !depositReturned
     SC->>SC: depositReturned = true
-    SC->>T: 💰 Transfer(deposit) - pilnas užstatas
-    SC-->>L: ✅ Emit DepositReturned(tenant, amount)
+    SC->>T: Transfer(deposit) - pilnas užstatas
+    SC-->>L: Emit DepositReturned(tenant, amount)
     deactivate SC
 
-    Note over L,SC,T: 🎉 Sėkmingai užbaigta! Nuomininkas gavo užstatą atgal.
+    Note over L,SC,T: Sėkmingai užbaigta! Nuomininkas gavo užstatą atgal.
 ```
 
 #### **Veiksmai ir Jų Aprašymai:**
@@ -392,11 +392,11 @@ sequenceDiagram
 5. **returnDeposit()** - Užstato grąžinimas:
    - Nuomotojas patvirtina, kad nėra pretenzijų
    - Contract perveda pilną užstatą nuomininkui
-   - Sutartis pilnai uždaryta ✅
+   - Sutartis pilnai uždaryta
 
 ---
 
-### **2. Ginčo Scenarijus (Dispute Resolution)** ⚖️
+### **2. Ginčo Scenarijus (Dispute Resolution)**
 
 ```mermaid
 sequenceDiagram
@@ -420,17 +420,17 @@ sequenceDiagram
         SC->>SC: Patikrinti: !depositReturned
         SC->>SC: Patikrinti: msg.sender == landlord OR tenant
         SC->>SC: State = DISPUTED
-        SC->>SC: 🔒 Užstatas UŽŠALDOMAS contract'e
-        SC-->>L: ✅ Emit DisputeRaised(landlord, reason)
-        SC-->>A: 📧 Pranešimas: reikia arbitražo!
+        SC->>SC: Užstatas UŽŠALDOMAS contract'e
+        SC-->>L: Emit DisputeRaised(landlord, reason)
+        SC-->>A: Pranešimas: reikia arbitražo!
         deactivate SC
     else Nuomininkas kelia ginčą
         T->>SC: 5b. raiseDispute("No damage - unfair claim")
         activate SC
         SC->>SC: [Tie patys patikrinimai]
         SC->>SC: State = DISPUTED
-        SC-->>T: ✅ Emit DisputeRaised(tenant, reason)
-        SC-->>A: 📧 Pranešimas: reikia arbitražo!
+        SC-->>T: Emit DisputeRaised(tenant, reason)
+        SC-->>A: Pranešimas: reikia arbitražo!
         deactivate SC
     end
 
@@ -455,18 +455,18 @@ sequenceDiagram
     SC->>SC: depositReturned = true
 
     par Lygiagretus Paskirstymas
-        SC->>T: 💰 Transfer(0.014 ETH) - 70% užstato
+        SC->>T: Transfer(0.014 ETH) - 70% užstato
         and
-        SC->>L: 💰 Transfer(0.006 ETH) - 30% užstato
+        SC->>L: Transfer(0.006 ETH) - 30% užstato
     end
 
     SC->>SC: State = COMPLETED
-    SC-->>A: ✅ Emit DisputeResolved(0.014, 0.006)
-    SC-->>L: ✅ Gautas kompensacija
-    SC-->>T: ✅ Gautas dalis užstato
+    SC-->>A: Emit DisputeResolved(0.014, 0.006)
+    SC-->>L: Gautas kompensacija
+    SC-->>T: Gautas dalis užstato
     deactivate SC
 
-    Note over L,SC,A: ⚖️ Ginčas išspręstas! Abiejų šalių gauti pinigai.
+    Note over L,SC,A: Ginčas išspręstas! Abiejų šalių gauti pinigai.
 ```
 
 #### **Veiksmai ir Jų Aprašymai:**
@@ -488,8 +488,7 @@ sequenceDiagram
    - Contract automatiškai apskaičiuoja sumas
    - Perveda ETH abiems šalims pagal sprendimą
    - Būsena grįžta į `COMPLETED`
-   - Sutartis uždaryta ✅
-
+   - Sutartis uždaryta 
 ---
 
 ### **3. Sutarties Atšaukimo Scenarijus (Cancellation)** 🚫
@@ -506,7 +505,7 @@ sequenceDiagram
     activate SC
     SC->>SC: Išsaugoti duomenis
     SC->>SC: State = CREATED
-    SC-->>L: ✅ Sutartis sukurta
+    SC-->>L: Sutartis sukurta
     deactivate SC
 
     Note over L,SC,T: PHASE 2: Nuomotojas Persigalvoja
@@ -520,11 +519,11 @@ sequenceDiagram
     SC->>SC: Patikrinti: state == CREATED
     SC->>SC: Patikrinti: msg.sender == landlord
     SC->>SC: State = CANCELLED
-    SC-->>L: ✅ Emit RentalCancelled("Contract cancelled by landlord")
-    SC-->>T: 📧 Pranešimas: Sutartis atšaukta
+    SC-->>L: Emit RentalCancelled("Contract cancelled by landlord")
+    SC-->>T: Pranešimas: Sutartis atšaukta
     deactivate SC
 
-    Note over L,SC,T: ❌ Sutartis neaktyvi - nuomininkas nebegali sumokėti
+    Note over L,SC,T: Sutartis neaktyvi - nuomininkas nebegali sumokėti
 
     rect rgb(220, 220, 220)
         Note over T: Nuomininkas negali:<br/>- payDepositAndFirstRent()<br/>- Bet kokių veiksmų su contract
@@ -547,7 +546,7 @@ sequenceDiagram
 
 **Kodėl svarbu:** Lankstumo suteikimas prieš pradedant sutartį, jokių baudų.
 
-## 🔧 Technologijos
+## Technologijos
 
 - **Blockchain**: Ethereum (Sepolia Testnet)
 - **Smart Contract**: Solidity ^0.8.0
@@ -557,7 +556,7 @@ sequenceDiagram
 - **API Provider**: Infura
 - **Frontend**: HTML, CSS, JavaScript, Web3.js
 
-## 📦 Įdiegimas ir Paleidimas
+## Įdiegimas ir Paleidimas
 
 ### 1. Priklausomybių Įdiegimas
 
@@ -616,7 +615,7 @@ truffle migrate --network development
 truffle migrate --network sepolia
 ```
 
-## 🧪 Testavimas
+## Testavimas
 
 Projektui sukurti išsamūs testai (`test/RentalAgreement.test.js`):
 
@@ -626,15 +625,15 @@ truffle test
 
 Testai apima:
 
-- ✅ Sutarties sukūrimą
-- ✅ Užstato ir pirmo mokėjimo sumokėjimą
-- ✅ Mėnesinius mokėjimus
-- ✅ Nuomos užbaigimą
-- ✅ Užstato grąžinimą
-- ✅ Ginčų kėlimą ir sprendimą
-- ✅ Sutarties atšaukimą
+- Sutarties sukūrimą
+- Užstato ir pirmo mokėjimo sumokėjimą
+- Mėnesinius mokėjimus
+- Nuomos užbaigimą
+- Užstato grąžinimą
+- Ginčų kėlimą ir sprendimą
+- Sutarties atšaukimą
 
-## 📝 Smart Contract Funkcijos
+## Smart Contract Funkcijos
 
 ### Pagrindinės Funkcijos
 
@@ -654,22 +653,22 @@ Testai apima:
 - **getDaysUntilEnd()** - Dienų skaičius iki nuomos pabaigos
 - **isRentDue()** - Ar reikia mokėti nuomą
 
-## 🌐 Front-End Aplikacija
+## Front-End Aplikacija
 
 Front-End aplikacija (bus sukurta) leis:
 
-- ✅ Prisijungti su MetaMask
-- ✅ Kurti naujas nuomos sutartis (nuomotojui)
-- ✅ Peržiūrėti sutarties detales
-- ✅ Mokėti užstatą ir nuomą (nuomininkui)
-- ✅ Valdyti ginčus
-- ✅ Matyti transakcijų istoriją
+- Prisijungti su MetaMask
+- Kurti naujas nuomos sutartis (nuomotojui)
+- Peržiūrėti sutarties detales
+- Mokėti užstatą ir nuomą (nuomininkui)
+- Valdyti ginčus
+- Matyti transakcijų istoriją
 
 ---
 
-## 🚀 Deployed Smart Contract
+## Deployed Smart Contract
 
-### ✅ Live Contract na Sepolia Testnet
+### Live Contract na Sepolia Testnet
 
 **Contract Address:**
 
@@ -677,28 +676,28 @@ Front-End aplikacija (bus sukurta) leis:
 0xeF9D744ADc74eeC3E8C81F598A0FA93d36CC4515
 ```
 
-### 🔗 Blockchain Explorers
+### Blockchain Explorers
 
 Galite peržiūrėti contract ir transakcijas:
 
 1. **Sepolia Etherscan** (Main)
 
-   - 🌐 https://sepolia.etherscan.io/address/0xeF9D744ADc74eeC3E8C81F598A0FA93d36CC4515
-   - ✅ Verified source code
-   - 📊 View transactions, events, contract state
+   - https://sepolia.etherscan.io/address/0xeF9D744ADc74eeC3E8C81F598A0FA93d36CC4515
+   - Verified source code
+   - View transactions, events, contract state
 
 2. **Blockscout** (Alternative)
 
-   - 🌐 https://eth-sepolia.blockscout.com/address/0xeF9D744ADc74eeC3E8C81F598A0FA93d36CC4515
-   - ✅ Verified and readable code
-   - 🔍 Detailed transaction traces
+   - https://eth-sepolia.blockscout.com/address/0xeF9D744ADc74eeC3E8C81F598A0FA93d36CC4515
+   - Verified and readable code
+   - Detailed transaction traces
 
 3. **Sourcify** (Source Verification)
-   - 🌐 https://sourcify.dev/#/lookup/0xeF9D744ADc74eeC3E8C81F598A0FA93d36CC4515
-   - ✅ Full source code match
-   - 📝 Contract metadata
+   - https://sourcify.dev/#/lookup/0xeF9D744ADc74eeC3E8C81F598A0FA93d36CC4515
+   - Full source code match
+   - Contract metadata
 
-### 📊 Deployment Details
+### Deployment Details
 
 ```
 Network:          Sepolia Testnet
@@ -708,7 +707,7 @@ Deployer:         0xb563E604b28CA91Be0548F9655b463253971AbD9
 Transaction Hash: 0xea8079d5f4f04305d24b85d935a065415e4534754e847519cf82bfc998e255d9
 Gas Used:         489,130
 Deployment Date:  2024-12-17
-Verification:     ✅ Verified on Sourcify & Blockscout
+Verification:     Verified on Sourcify & Blockscout
 ```
 
 ### 🔍 Contract Constructor Parameters
@@ -724,7 +723,7 @@ Duration:          6 months
 Property Address:  "Gedimino pr. 1, Vilnius"
 ```
 
-### 📈 Kaip Peržiūrėti Contract
+### Kaip Peržiūrėti Contract
 
 1. **Atidarykite Etherscan link** viršuje
 2. **Tabs kuriuos galite naudoti:**
@@ -747,7 +746,7 @@ Property Address:  "Gedimino pr. 1, Vilnius"
    - `payMonthlyRent()` - Tenant moka mėnesinę nuomą
    - `returnDeposit()` - Landlord grąžina užstatą
 
-## 📈 Sutarties Būsenos (States)
+## Sutarties Būsenos (States)
 
 - **CREATED** (0) - Sutartis sukurta, laukiama užstato
 - **ACTIVE** (1) - Sutartis aktyvi, vyksta nuoma
@@ -756,7 +755,7 @@ Property Address:  "Gedimino pr. 1, Vilnius"
 - **DISPUTED** (4) - Ginčas tarp šalių
 - **CANCELLED** (5) - Sutartis atšaukta
 
-## 💡 Pagrindiniai Pranašumai
+## Pagrindiniai Pranašumai
 
 1. **Skaidrumas** - Visos transakcijos blockchain'e
 2. **Automatizacija** - Mokėjimai pervedami automatiškai
@@ -764,15 +763,15 @@ Property Address:  "Gedimino pr. 1, Vilnius"
 4. **Ginčų sprendimas** - Neutralus arbitras
 5. **Patikimumas** - Kodo negalima pakeisti
 
-## ⚠️ Saugumo Funkcijos
+## Saugumo Funkcijos
 
-- ✅ Modifikatoriai (onlyLandlord, onlyTenant, onlyArbiter)
-- ✅ Būsenų valdymas (State machine)
-- ✅ Laiko patikros (mokėjimų dažnis)
-- ✅ Reentrancy apsauga
-- ✅ Input validacija
+- Modifikatoriai (onlyLandlord, onlyTenant, onlyArbiter)
+- Būsenų valdymas (State machine)
+- Laiko patikros (mokėjimų dažnis)
+- Reentrancy apsauga
+- Input validacija
 
-## 📚 Papildoma Informacija
+## Papildoma Informacija
 
 - **Solidity versija**: 0.8.21
 - **License**: MIT
@@ -781,26 +780,26 @@ Property Address:  "Gedimino pr. 1, Vilnius"
 
 ---
 
-## 📝 Verslo Modelio Santrauka
+## Verslo Modelio Santrauka
 
-### 🎯 Pagrindinė Idėja
+### Pagrindinė Idėja
 
 **Problema:** Tradicinėse nuomos sutartyse:
 
-- ❌ Užstatas gali būti nepagristai sulaikytas
-- ❌ Nuomininkas turi pasitikėti nuomotoju
-- ❌ Ginčai sprendžiami teismuose (ilgai ir brangiai)
-- ❌ Nėra skaidrumo pinigų judėjime
+- Užstatas gali būti nepagristai sulaikytas
+- Nuomininkas turi pasitikėti nuomotoju
+- Ginčai sprendžiami teismuose (ilgai ir brangiai)
+- Nėra skaidrumo pinigų judėjime
 
 **Sprendimas - Smart Contract:**
 
-- ✅ Užstatas saugomas blockchain'e (neutrali vieta)
-- ✅ Automatiniai mokėjimai - be tarpininkų
-- ✅ Nepriklausomas arbitras greičiams ginčams
-- ✅ Viskas skaidru ir įrašyta blockchain'e
-- ✅ Kodas = sutartis (negalima apgauti)
+- Užstatas saugomas blockchain'e (neutrali vieta)
+- Automatiniai mokėjimai - be tarpininkų
+- Nepriklausomas arbitras greičiams ginčams
+- Viskas skaidru ir įrašyta blockchain'e
+- Kodas = sutartis (negalima apgauti)
 
-### 🔑 Unikalūs Verslo Modelio Bruožai
+### Unikalūs Verslo Modelio Bruožai
 
 | Aspektas           | Pavyzdinis Modelis (Prekių Pardavimas) | Mūsų Modelis (Nuoma)                                                 |
 | ------------------ | -------------------------------------- | -------------------------------------------------------------------- |
@@ -812,7 +811,7 @@ Property Address:  "Gedimino pr. 1, Vilnius"
 | **Būsenos**        | 3 (Created, Paid, Delivered)           | 6 (CREATED, ACTIVE, PAYMENT_PENDING, COMPLETED, DISPUTED, CANCELLED) |
 | **Automatizacija** | Vienkartin                             | Pasikartojanti (mėnesiniai mokėjimai)                                |
 
-### 💡 Kodėl Šis Modelis Vertas Papildomo Balo?
+### Kodėl Šis Modelis Vertas Papildomo Balo?
 
 1. **Sudėtingumas** - Ne vienkartinė transakcija, o ilgalaikis process management
 2. **Laikas** - Laiko valdymas (mokėjimų intervalai, sutarties trukmė)
@@ -821,121 +820,81 @@ Property Address:  "Gedimino pr. 1, Vilnius"
 5. **Realus Panaudojimas** - Tiesioginė rinkos problema (nuomos sutartys)
 6. **Valstybių Mašina** - Kompleksiška state machine su 6 būsenomis
 
-### 📊 Verslo Logikos Pilnumas
+### Verslo Logikos Pilnumas
 
 **Aprėpta:**
 
-- ✅ Happy path (visa sėkminga)
-- ✅ Dispute path (ginčas ir sprendimas)
-- ✅ Cancellation path (atšaukimas prieš pradžią)
-- ✅ Edge cases (mokėjimų intervalai, laiko valdymas)
-- ✅ Security (role-based access control)
-- ✅ Financial safety (užstato apsauga)
+- Happy path (visa sėkminga)
+- Dispute path (ginčas ir sprendimas)
+- Cancellation path (atšaukimas prieš pradžią)
+- Edge cases (mokėjimų intervalai, laiko valdymas)
+- Security (role-based access control)
+- Financial safety (užstato apsauga)
 
 **Realūs Panaudojimo Scenarijai:**
 
-- 🏠 Butų nuoma
-- 🏢 Komerciniųturnų nuoma
-- 🚗 Automobilių nuoma (ilgalaikė)
-- 🏖️ Atostogų namų nuoma (trumpalaikė)
+- Butų nuoma
+- Komerciniųturnų nuoma
+- Automobilių nuoma (ilgalaikė)
+- Atostogų namų nuoma (trumpalaikė)
 
 ---
 
-## 🎓 Akademinė Užduotis - Įvykdyti Reikalavimai
+## Akademinė Užduotis - Įvykdyti Reikalavimai
 
-### ✅ Užduoties Įgyvendinimas
+### Užduoties Įgyvendinimas
 
-**1. Verslo Modelio Aprašymas** ✅
+**1. Verslo Modelio Aprašymas** 
 
-- 📝 Išsamiai aprašytas verslo modelis (skirtumas nuo pavyzdžio)
-- 👥 Aiškiai įvardyti 3 pagrindiniai veikėjai su rolėmis ir funkcijomis
-- 🔄 Aprašyti 4 tipiški scenarijai su detaliais žingsniais
-- 📊 3 sekų diagramos (Happy Path, Dispute, Cancellation) su Mermaid
-- 💬 Kiekvienas sekos veiksmas trumpai aprašytas
+- Išsamiai aprašytas verslo modelis (skirtumas nuo pavyzdžio)
+- Aiškiai įvardyti 3 pagrindiniai veikėjai su rolėmis ir funkcijomis
+- Aprašyti 4 tipiški scenarijai su detaliais žingsniais
+- 3 sekų diagramos (Happy Path, Dispute, Cancellation) su Mermaid
+- Kiekvienas sekos veiksmas trumpai aprašytas
 
-**2. Smart Contract Implementacija** ✅
+**2. Smart Contract Implementacija** 
 
-- 💻 Solidity 0.8.21 smart contract (322 linijos)
-- 🔐 9 pagrindinės funkcijos + 4 view funkcijos
-- 🎭 6 būsenos (state machine)
-- ⚡ 9 events (RentalCreated, RentPaid, DisputeRaised, etc.)
-- 🛡️ Security: modifieriai, validacijos, reentrancy protection
+- Solidity 0.8.21 smart contract (322 linijos)
+- 9 pagrindinės funkcijos + 4 view funkcijos
+- 6 būsenos (state machine)
+- 9 events (RentalCreated, RentPaid, DisputeRaised, etc.)
+- Security: modifieriai, validacijos, reentrancy protection
 
-**3. Testing ir Deployment** ✅
+**3. Testing ir Deployment** 
 
-- 🧪 Comprehensive test suite (Ganache)
-- 🌐 Deployed į Sepolia Testnet
-- ✅ Verified contract source code (Sourcify, Blockscout)
-- 🔗 Etherscan links su transakcijomis
+- Comprehensive test suite (Ganache)
+- Deployed į Sepolia Testnet
+- Verified contract source code (Sourcify, Blockscout)
+- Etherscan links su transakcijomis
 
-**4. Decentralizuota Aplikacija (DApp)** ✅
+**4. Decentralizuota Aplikacija (DApp)** 
 
-- 🖥️ Frontend su HTML/CSS/JavaScript
-- 🔌 Web3.js integracija
-- 🦊 MetaMask connection
-- 🎨 Responsive UI su 3 tabs (Create, Manage, View)
-- 🔔 Notifications system
+-  Frontend su HTML/CSS/JavaScript
+-  Web3.js integracija
+-  MetaMask connection
+-  Responsive UI su 3 tabs (Create, Manage, View)
+-  Notifications system
 
-**5. Dokumentacija** ✅
+**5. Dokumentacija** 
 
-- 📚 README.md su išsamiais aprašymais
-- 📊 Sequence diagrams (Mermaid format)
-- 🚀 Deployment guide (Ganache ir Sepolia)
-- 🧪 Testing guide
-- 📖 Business model description
+-  README.md su išsamiais aprašymais
+-  Sequence diagrams (Mermaid format)
+-  Deployment guide (Ganache ir Sepolia)
+-  Testing guide
+-  Business model description
 
-### 🏆 Papildomas Balas (+0.5)
+###  Papildomas Balas (+0.5)
 
 **Kriterijai įvykdyti:**
 
-1. ✅ **Kitoks verslo modelis** - Ne prekių pardavimas, o nuomos valdymas
-2. ✅ **Kokybiškas aprašymas** - Išsamus README su:
+1.  **Kitoks verslo modelis** - Ne prekių pardavimas, o nuomos valdymas
+2.  **Kokybiškas aprašymas** - Išsamus README su:
    - Veikėjų rolėmis ir atsakomybėmis
    - Tipiniais scenarijais su žingsniais
    - 3 detaliomniškomis sequence diagrams
    - Kiekvieno action aprašymu
    - Business model privalumais ir skirtumais
-3. ✅ **Kompleksiškumas** - 6 būsenos, 3 šalys, periodiniai mokėjimai
-4. ✅ **Realus panaudojimas** - Sprendžia tikrą rinkos problemą
+3. **Kompleksiškumas** - 6 būsenos, 3 šalys, periodiniai mokėjimai
+4. **Realus panaudojimas** - Sprendžia tikrą rinkos problemą
 
 ---
-
-## 📞 Projekto Informacija
-
-**Autorius:** [Jūsų vardas]  
-**Institucija:** [Universitetas]  
-**Kursas:** Blockchain Technologijos  
-**Data:** 2024-12-17
-
-**GitHub Repository:** https://github.com/[username]/smartContractV2  
-**Live Contract:** https://sepolia.etherscan.io/address/0xeF9D744ADc74eeC3E8C81F598A0FA93d36CC4515
-
----
-
-## ⚠️ Disclaimer
-
-**Pastaba:** Tai yra **akademinis/test projektas**.
-
-- ⚠️ Nenaudokite production aplinkoje be profesionalaus security audito
-- 🧪 Testuota tik Sepolia testnet su fake ETH
-- 📚 Sukurta mokymo tikslais
-- 🔒 Reikia papildomo testavimo edge cases
-- ⚖️ Nėra jokių legalinių garantijų
-
-**Rekomenduojama prieš production:**
-
-1. Professional security audit
-2. Gas optimization
-3. Legal review (compliance)
-4. Extended testing (fuzz testing, formal verification)
-5. Emergency pause mechanism
-6. Upgradability pattern (if needed)
-
----
-
-**📖 Daugiau informacijos žiūrėkite papildomuose dokumentuose:**
-
-- `BUSINESS_MODEL.md` - Detailed business logic
-- `DEPLOYMENT.md` - Full deployment guide
-- `GANACHE_TESTING.md` - Local testing instructions
-- `PROJECT_SUMMARY.md` - Technical overview
