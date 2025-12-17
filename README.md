@@ -133,210 +133,93 @@ Smart contract naudoja **State machine**:
 
 ---
 
-### **Scenarijus 1: Sėkminga Nuoma (Happy Path)**
+### Scenarijus A: Sėkminga nuoma
+1. Landlord deploy’ina contract (`CREATED`)
+2. Nuomininkas kviečia `payDepositAndFirstRent()` → contract perveda pirmą nuomą landlord’ui, deposit lieka contract’e (`ACTIVE`)
+3. Nuomininkas periodiškai kviečia `payMonthlyRent()` → automatinis pervedimas landlord’ui
+4. Pasibaigus terminui kviečiamas `completeRental()` (`COMPLETED`)
+5. Landlord kviečia `returnDeposit()` → deposit grąžinamas Nuomininkui
 
-**Tikslas:** Nuomotojas sėkmingai išnuomoja turtą, nuomininkas moka laiku, sutartis baigiasi be ginčų.
+### Scenarijus B: Ginčas
+1–4 kaip A scenarijuje iki `COMPLETED`
+5. Landlord arba nuomininkas kviečia `raiseDispute(reason)` → (`DISPUTED`)
+6. Arbitras kviečia `resolveDispute(tenantPercentage)` → užstatas paskirstomas, būsena grįžta į `COMPLETED`
 
-**Veiksmai:**
-
-1. **Sutarties Sukūrimas** (Nuomotojas)
-
-   - Nuomotojas deploy'ina contract su parametrais:
-     - Nuomininko adresas
-     - Arbitro adresas
-     - Mėnesinė nuoma (pvz., 0.01 ETH)
-     - Užstatas (pvz., 0.02 ETH)
-     - Trukmė (pvz., 6 mėnesiai)
-     - Turto adresas
-   - **Būsena:** `CREATED`
-
-2. **Užstato ir Pirmo Mokėjimo Sumokėjimas** (Nuomininkas)
-
-   - Nuomininkas sumoka: užstatas + pirma nuoma (0.03 ETH)
-   - Contract automatiškai perveda pirmą nuomos mokestį nuomotojui
-   - Užstatas lieka contract'e kaip garantija
-   - **Būsena:** `CREATED` → `ACTIVE`
-
-3. **Mėnesiniai Mokėjimai** (Nuomininkas)
-
-   - Kas 25+ dienų nuomininkas moka mėnesinę nuomą (0.01 ETH)
-   - Contract automatiškai perveda pinigus nuomotojui
-   - **Būsena:** `ACTIVE` (nepakeičiama)
-
-4. **Nuomos Pabaiga** (Nuomotojas arba Nuomininkas)
-
-   - Po 6 mėnesių bet kuri šalis gali užbaigti sutartį
-   - **Būsena:** `ACTIVE` → `COMPLETED`
-
-5. **Užstato Grąžinimas** (Nuomotojas)
-   - Nuomotojas patikrina turto būklę
-   - Jei viskas gerai, grąžina pilną užstatą (0.02 ETH)
-   - **Rezultatas:** Nuomininkas gauna pinigus atgal ✅
-
-**Finansiniai Rezultatai:**
-
-- **Nuomotojas:** +0.06 ETH (6 mėn × 0.01 ETH)
-- **Nuomininkas:** -0.06 ETH (nuoma), +0.02 ETH (užstatas atgal)
-- **Arbitras:** 0 ETH (nedalyvavo)
+### Scenarijus C: Atšaukimas iki pradžios
+1. Landlord deploy’ina contract (`CREATED`)
+2. Landlord kviečia `cancelRental()` → (`CANCELLED`)
+3. Nuomininkas nebegali aktyvuoti sutarties ✅
 
 ---
 
-### **Scenarijus 2: Nuoma su Ginču** 
+## Sekų diagramos (Sequence Diagrams)
 
-**Tikslas:** Nuomos pabaigoje kyla ginčas dėl turto būklės, arbitras nusprendžia užstato paskirstymą.
-
-**Veiksmai:**
-
-1-4. **[Kaip Scenarijus 1]** - Sutartis aktyvuojama, moka nuomą, baigiasi laikotarpis
-
-5. **Ginčo Kėlimas** (Nuomotojas ARBA Nuomininkas)
-
-   - **Pavyzdys:** Nuomotojas tvirtina: "Nuomininkas sugadino grindis"
-   - Kviečia funkciją `raiseDispute("Damaged floors, repair cost 0.01 ETH")`
-   - **Būsena:** `COMPLETED` → `DISPUTED`
-   - Užstatas (0.02 ETH) lieka užšaldytas contract'e 
-
-6. **Ginčo Nagrinėjimas** (Arbitras)
-
-   - Arbitras peržiūri įrodymus:
-     - Nuotraukas prieš/po nuomos
-     - Aktus, sąskaitas už remontą
-     - Abiejų šalių paaiškinimus
-   - Nusprendžia teisingą užstato paskirstymą
-
-7. **Ginčo Sprendimas** (Arbitras)
-   - Kviečia `resolveDispute(70)` → 70% nuomininkui, 30% nuomotojui
-   - Contract automatiškai paskirsto:
-     - 0.014 ETH → Nuomininkas
-     - 0.006 ETH → Nuomotojas (kompensacija)
-   - **Būsena:** `DISPUTED` → `COMPLETED`
-
-**Finansiniai Rezultatai:**
-
-- **Nuomotojas:** +0.06 ETH (nuoma) + 0.006 ETH (dalis užstato) = 0.066 ETH
-- **Nuomininkas:** -0.06 ETH (nuoma) + 0.014 ETH (dalis užstato) = -0.046 ETH
-- **Arbitras:** 0 ETH (arbitražas paprastai už mokėjimo sistema)
-
----
-
-### **Scenarijus 3: Sutarties Atšaukimas**
-
-**Tikslas:** Nuomotojas atsisako sutarties prieš jos pradžią.
-
-**Veiksmai:**
-
-1. **Sutarties Sukūrimas** (Nuomotojas)
-
-   - Sukuria contract su parametrais
-   - **Būsena:** `CREATED`
-
-2. **Atšaukimas** (Nuomotojas)
-
-   - Nuomotojas pasikeičia nuomonę (rado kitą nuomininką, parduoda turtą, etc.)
-   - Kviečia `cancelRental()`
-   - **Būsena:** `CREATED` → `CANCELLED`
-
-3. **Rezultatas**
-   - Nuomininkas nebegali sumokėti užstato
-   - Sutartis tampa neaktyvi
-   - Jokių finansinių įsipareigojimų
-
-**Pastaba:** Atšaukti galima TIK prieš sumokant užstatą (state = CREATED)!
-
----
-
-### **Scenarijus 4: Nuomininkas Nemoka Nuomos**
-
-**Tikslas:** Nuomininkas nustoja mokėti, nuomotojas gali pasinaudoti užstatu.
-
-**Realybė:** Smart contract **negali priverstinai** paimti pinigų iš nuomininko wallet.
-
-**Sprendimas:**
-
-- Nuomininkas **savanoriškai** moka arba nemoka
-- Jei nemoka → Nuomotojas kelia ginčą pasibaigus terminui
-- Arbitras nustato, kad užstatas lieka nuomotojui kaip kompensacija
-
-**Alternatyva (advanced):**
-
-- Galima implementuoti `evict()` funkciją
-- Jei nuomininkas praleido N mokėjimų → Nuomotojas automatiškai gauna dalį užstato
-
----
-
-## Sekų Diagramos (Sequence Diagrams)
-
-### **1. Sėkmingos Nuomos Scenarijus (Happy Path)**
+### 1. Sėkminga nuoma (Happy Path)
 
 ```mermaid
 sequenceDiagram
-    participant L as Nuomotojas<br/>(Landlord)
-    participant SC as Smart Contract<br/>(RentalAgreement)
-    participant T as Nuomininkas<br/>(Tenant)
+    participant L as Nuomotojas (Landlord)
+    participant SC as Smart Contract (RentalAgreement)
+    participant T as Nuomininkas (Tenant)
 
-    Note over L,SC,T: PHASE 1: Sutarties Sukūrimas
-
-    L->>SC: 1. constructor(tenant, arbiter, rent, deposit, duration, address)
+    Note over L,SC,T: 1 etapas — Sutarties sukūrimas (CREATED)
+    L->>SC: constructor(tenant, arbiter, rent, deposit, duration, propertyAddress)
     activate SC
-    SC->>SC: Validuoti parametrus (require checks)
-    SC->>SC: Išsaugoti duomenis (rental struct)
-    SC->>SC: State = CREATED
-    SC-->>L: Sutartis sukurta (contract address)
+    SC->>SC: Validuoja parametrus (require)
+    SC->>SC: Išsaugo sutarties duomenis (struct)
+    SC->>SC: state = CREATED
+    SC-->>L: Grąžina contract address
     deactivate SC
 
-    Note over L,SC,T: PHASE 2: Sutarties Aktyvavimas
-
-    T->>SC: 2. payDepositAndFirstRent() payable {value: deposit + rent}
+    Note over L,SC,T: 2 etapas — Aktyvavimas (CREATED → ACTIVE)
+    T->>SC: payDepositAndFirstRent() {value: deposit + rent}
     activate SC
-    SC->>SC: Patikrinti: state == CREATED
-    SC->>SC: Patikrinti: msg.value == deposit + monthlyRent
-    SC->>SC: State = ACTIVE
-    SC->>SC: Išsaugoti startDate = now
-    SC->>L: Transfer(monthlyRent) - pirmoji nuoma
-    SC->>SC: Užstatas lieka contract'e
-    SC-->>T: Emit RentalActivated(startDate)
+    SC->>SC: require(state == CREATED)
+    SC->>SC: require(msg.value == deposit + rent)
+    SC->>SC: startDate = block.timestamp
+    SC->>SC: state = ACTIVE
+    SC->>L: perveda rent (pirma nuoma)
+    SC->>SC: deposit lieka contract'e (escrow)
+    SC-->>T: emit RentalActivated(startDate)
     deactivate SC
 
-    Note over L,SC,T: PHASE 3: Periodiniai Mokėjimai (6 mėnesius)
-
-    loop Kas mėnesį (25+ dienų intervalas)
-        T->>SC: 3. payMonthlyRent() payable {value: rent}
+    Note over L,SC,T: 3 etapas — Periodiniai mokėjimai (ACTIVE)
+    loop Kas mėnesį (min. kas 25 d.)
+        T->>SC: payMonthlyRent() {value: rent}
         activate SC
-        SC->>SC: Patikrinti: state == ACTIVE
-        SC->>SC: Patikrinti: now >= lastPaymentDate + 25 days
-        SC->>SC: Atnaujinti lastPaymentDate = now
-        SC->>L: Transfer(monthlyRent)
-        SC-->>T: Emit RentPaid(amount, date)
+        SC->>SC: require(state == ACTIVE)
+        SC->>SC: require(block.timestamp >= lastPaymentDate + 25 days)
+        SC->>SC: lastPaymentDate = block.timestamp
+        SC->>L: perveda rent
+        SC-->>T: emit RentPaid(rent, lastPaymentDate)
         deactivate SC
     end
 
-    Note over L,SC,T: PHASE 4: Nuomos Užbaigimas (po 6 mėnesių)
-
-    alt Užbaigia Nuomotojas
-        L->>SC: 4a. completeRental()
-    else Užbaigia Nuomininkas
-        T->>SC: 4b. completeRental()
+    Note over L,SC,T: 4 etapas — Nuomos užbaigimas (ACTIVE → COMPLETED)
+    alt Užbaigia nuomotojas
+        L->>SC: completeRental()
+    else Užbaigia nuomininkas
+        T->>SC: completeRental()
     end
     activate SC
-    SC->>SC: Patikrinti: state == ACTIVE
-    SC->>SC: Patikrinti: now >= endDate
-    SC->>SC: State = COMPLETED
-    SC-->>L: Emit RentalCompleted(endDate)
-    SC-->>T: Emit RentalCompleted(endDate)
+    SC->>SC: require(state == ACTIVE)
+    SC->>SC: require(block.timestamp >= endDate)
+    SC->>SC: state = COMPLETED
+    SC-->>L: emit RentalCompleted(endDate)
+    SC-->>T: emit RentalCompleted(endDate)
     deactivate SC
 
-    Note over L,SC,T: PHASE 5: Užstato Grąžinimas (jei nėra pretenzijų)
-
-    L->>SC: 5. returnDeposit()
+    Note over L,SC,T: 5 etapas — Užstato grąžinimas (COMPLETED)
+    L->>SC: returnDeposit()
     activate SC
-    SC->>SC: Patikrinti: state == COMPLETED
-    SC->>SC: Patikrinti: !depositReturned
+    SC->>SC: require(state == COMPLETED)
+    SC->>SC: require(!depositReturned)
     SC->>SC: depositReturned = true
-    SC->>T: Transfer(deposit) - pilnas užstatas
-    SC-->>L: Emit DepositReturned(tenant, amount)
+    SC->>T: perveda deposit (pilnas užstatas)
+    SC-->>L: emit DepositReturned(T, deposit)
     deactivate SC
 
-    Note over L,SC,T: Sėkmingai užbaigta! Nuomininkas gavo užstatą atgal.
+    Note over L,SC,T: Rezultatas — nuoma baigta sėkmingai, užstatas grąžintas.
 ```
 
 #### **Veiksmai ir Jų Aprašymai:**
