@@ -162,7 +162,7 @@ sequenceDiagram
     participant SC as Smart Contract (RentalAgreement)
     participant T as Nuomininkas (Tenant)
 
-    Note over L,SC,T: 1 etapas — Sutarties sukūrimas (CREATED)
+    Note over L,SC,T: 1 etapas - Sutarties sukūrimas (CREATED)
     L->>SC: constructor(tenant, arbiter, rent, deposit, duration, propertyAddress)
     activate SC
     SC->>SC: Validuoja parametrus (require)
@@ -219,7 +219,7 @@ sequenceDiagram
     SC-->>L: emit DepositReturned(T, deposit)
     deactivate SC
 
-    Note over L,SC,T: Rezultatas — nuoma baigta sėkmingai, užstatas grąžintas.
+    Note over L,SC,T: Rezultatas - nuoma baigta sėkmingai, užstatas grąžintas.
 ```
 
 #### **Veiksmai ir Jų Aprašymai:**
