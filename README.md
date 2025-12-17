@@ -158,65 +158,62 @@ Smart contract naudoja **State machine**:
 
 ```mermaid
 sequenceDiagram
-    participant L as Nuomotojas (Landlord)
-    participant SC as Smart Contract (RentalAgreement)
-    participant T as Nuomininkas (Tenant)
+    participant L as Landlord
+    participant SC as RentalAgreement
+    participant T as Tenant
 
-    Note over L,SC,T: 1 etapas - Sutarties sukūrimas (CREATED)
+    Note over L,SC,T: 1 etapas - Sutarties sukurimas (CREATED)
+
     L->>SC: constructor(tenant, arbiter, rent, deposit, duration, propertyAddress)
     activate SC
-    SC->>SC: Validuoja parametrus (require)
-    SC->>SC: Išsaugo sutarties duomenis (struct)
+    SC->>SC: validate parameters
+    SC->>SC: store rental data
     SC->>SC: state = CREATED
-    SC-->>L: Grąžina contract address
+    SC-->>L: contract deployed
     deactivate SC
 
-    Note over L,SC,T: 2 etapas — Aktyvavimas (CREATED → ACTIVE)
-    T->>SC: payDepositAndFirstRent() {value: deposit + rent}
+    Note over L,SC,T: 2 etapas - Aktyvavimas (CREATED to ACTIVE)
+
+    T->>SC: payDepositAndFirstRent()
     activate SC
-    SC->>SC: require(state == CREATED)
-    SC->>SC: require(msg.value == deposit + rent)
-    SC->>SC: startDate = block.timestamp
+    SC->>SC: check state == CREATED
+    SC->>SC: check msg.value
+    SC->>SC: startDate = now
     SC->>SC: state = ACTIVE
-    SC->>L: perveda rent (pirma nuoma)
-    SC->>SC: deposit lieka contract'e (escrow)
-    SC-->>T: emit RentalActivated(startDate)
+    SC->>L: transfer first rent
+    SC-->>T: RentalActivated
     deactivate SC
 
-    Note over L,SC,T: 3 etapas — Periodiniai mokėjimai (ACTIVE)
-    loop Kas mėnesį (min. kas 25 d.)
-        T->>SC: payMonthlyRent() {value: rent}
+    Note over L,SC,T: 3 etapas - Periodiniai mokejimai
+
+    loop kiekviena menesi (min 25 d.)
+        T->>SC: payMonthlyRent()
         activate SC
-        SC->>SC: require(state == ACTIVE)
-        SC->>SC: require(block.timestamp >= lastPaymentDate + 25 days)
-        SC->>SC: lastPaymentDate = block.timestamp
-        SC->>L: perveda rent
-        SC-->>T: emit RentPaid(rent, lastPaymentDate)
+        SC->>SC: check payment interval
+        SC->>L: transfer rent
+        SC-->>T: RentPaid
         deactivate SC
     end
 
-    Note over L,SC,T: 4 etapas — Nuomos užbaigimas (ACTIVE → COMPLETED)
-    alt Užbaigia nuomotojas
+    Note over L,SC,T: 4 etapas - Nuomos uzbaigimas
+
+    alt landlord uzbaigia
         L->>SC: completeRental()
-    else Užbaigia nuomininkas
+    else tenant uzbaigia
         T->>SC: completeRental()
     end
     activate SC
-    SC->>SC: require(state == ACTIVE)
-    SC->>SC: require(block.timestamp >= endDate)
     SC->>SC: state = COMPLETED
-    SC-->>L: emit RentalCompleted(endDate)
-    SC-->>T: emit RentalCompleted(endDate)
+    SC-->>L: RentalCompleted
+    SC-->>T: RentalCompleted
     deactivate SC
 
-    Note over L,SC,T: 5 etapas — Užstato grąžinimas (COMPLETED)
+    Note over L,SC,T: 5 etapas - Uzstato grazinimas
+
     L->>SC: returnDeposit()
     activate SC
-    SC->>SC: require(state == COMPLETED)
-    SC->>SC: require(!depositReturned)
-    SC->>SC: depositReturned = true
-    SC->>T: perveda deposit (pilnas užstatas)
-    SC-->>L: emit DepositReturned(T, deposit)
+    SC->>T: transfer deposit
+    SC-->>L: DepositReturned
     deactivate SC
 
     Note over L,SC,T: Rezultatas - nuoma baigta sėkmingai, užstatas grąžintas.
