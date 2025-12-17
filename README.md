@@ -148,7 +148,7 @@ Smart contract naudoja **State machine**:
 ### Scenarijus C: Atšaukimas iki pradžios
 1. Landlord deploy’ina contract (`CREATED`)
 2. Landlord kviečia `cancelRental()` → (`CANCELLED`)
-3. Nuomininkas nebegali aktyvuoti sutarties ✅
+3. Nuomininkas nebegali aktyvuoti sutarties
 
 ---
 
