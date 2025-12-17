@@ -162,7 +162,7 @@ sequenceDiagram
     participant SC as RentalAgreement
     participant T as Tenant
 
-    Note over L,SC,T: 1 etapas - Sutarties sukurimas (CREATED)
+    Note over L,SC: 1 etapas - Sutarties sukurimas (CREATED)
 
     L->>SC: constructor(tenant, arbiter, rent, deposit, duration, propertyAddress)
     activate SC
@@ -172,7 +172,7 @@ sequenceDiagram
     SC-->>L: contract deployed
     deactivate SC
 
-    Note over L,SC,T: 2 etapas - Aktyvavimas (CREATED to ACTIVE)
+    Note over T,SC: 2 etapas - Aktyvavimas (CREATED to ACTIVE)
 
     T->>SC: payDepositAndFirstRent()
     activate SC
@@ -184,7 +184,7 @@ sequenceDiagram
     SC-->>T: RentalActivated
     deactivate SC
 
-    Note over L,SC,T: 3 etapas - Periodiniai mokejimai
+    Note over T,SC: 3 etapas - Periodiniai mokejimai
 
     loop kiekviena menesi (min 25 d.)
         T->>SC: payMonthlyRent()
@@ -195,7 +195,7 @@ sequenceDiagram
         deactivate SC
     end
 
-    Note over L,SC,T: 4 etapas - Nuomos uzbaigimas
+    Note over L,SC: 4 etapas - Nuomos uzbaigimas
 
     alt landlord uzbaigia
         L->>SC: completeRental()
@@ -208,7 +208,7 @@ sequenceDiagram
     SC-->>T: RentalCompleted
     deactivate SC
 
-    Note over L,SC,T: 5 etapas - Uzstato grazinimas
+    Note over L,SC: 5 etapas - Uzstato grazinimas
 
     L->>SC: returnDeposit()
     activate SC
@@ -216,7 +216,8 @@ sequenceDiagram
     SC-->>L: DepositReturned
     deactivate SC
 
-    Note over L,SC,T: Rezultatas - nuoma baigta sėkmingai, užstatas grąžintas.
+   Note over L,SC: Rezultatas - nuoma baigta sėkmingai, užstatas grąžintas.
+   
 ```
 
 #### **Veiksmai ir Jų Aprašymai:**
