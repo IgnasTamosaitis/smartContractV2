@@ -2,52 +2,39 @@
 
 ## Projekto Aprašymas
 
-Ši decentralizuota aplikacija įgyvendina **nekilnojamojo turto nuomos valdymo sistemą** naudojant Ethereum blockchain ir išmaniąją sutartį (smart contract). Sistema užtikrina skaidrų ir saugų nuomos procesą tarp nuomotojo, nuomininko ir arbitro.
+Decentralizuota aplikacija, kuri įgyvendina nekilnojamojo turto nuomos sutartį kaip **smart contract** su:
+- **užstato (deposit)** mechanizmu,
+- **periodiniais mėnesiniais mokėjimais**,
+- **ginčo sprendimu per arbitrą** (3-ioji šalis),
+- **Front-End DApp** (MetaMask + Web3.js), leidžiančia valdyti sutartį.
+
+> Verslo modelis pasirinktas **skirtingas nuo pavyzdžio** (ne prekių pardavimas, o ilgalaikė nuoma su periodiniais mokėjimais ir ginčais).
 
 ---
 
-## Verslo Modelis
+## Užduoties punktai
 
-### Kodėl Šis Modelis Skiriasi nuo Pavyzdžio?
-
-**Pavyzdinis modelis** (prekių pardavimas):
-
--  Vienkartinė transakcija
--  Dviejų šalių sandoris (pirkėjas, pardavėjas)
--  Momentinis pinigų perdavimas
-
-**Mūsų modelis** (nekilnojamojo turto nuoma):
-
--  **Ilgalaikis santykis** su periodiniais mokėjimais
--  **Trys šalys**: nuomotojas, nuomininkas, arbitras
--  **Užstatas** kaip saugumo garantija
--  **Ginčų sprendimo mechanizmas**
--  **Laiko valdymas** (nuomos trukmė, mokėjimo intervalai)
--  **Valstybių mašina** su 6 būsenomis (CREATED, ACTIVE, PAYMENT_PENDING, COMPLETED, DISPUTED, CANCELLED)
-
-### Verslo Modelio Privalumai
-
-1. **Skaidrumas** - Visi mokėjimai ir veiksmai įrašyti blockchain'e
-2. **Automatizacija** - Smart contract automatiškai valdo mokėjimus
-3. **Saugumas** - Užstatas saugomas contract'e, negali būti pasisavintas
-4. **Nešališkumas** - Nepriklausomas arbitras ginčų atveju
-5. **Neįmanoma pakeisti** - Sutarties sąlygos užfiksuotos ir nekeičiamos
-
+1. **Verslo modelis** aprašytas (veikėjai + scenarijai).
+2. Pasirinktas kelių šalių modelis: **Landlord / Tenant / Arbiter**.
+3. Pateiktos **sekų diagramos (Mermaid)** ir veiksmų aprašymai.
+4. Verslo logika realizuota **Solidity** smart contract’e.
+5. Ištestuota lokaliai (**Ganache**).
+6. Ištestuota viešame testnet’e (**Sepolia**).
+7. Peržiūrėti contract vykdymo įvykiai (logs) per **Etherscan**.
+8. Sukurtas **Front-End DApp**, komunikuojantis su smart contract.
 ---
 
-## Pagrindiniai Veikėjai (Actors)
+## Pagrindiniai dalyviai (Actors)
 
-### 1. **Nuomotojas (Landlord)**
+### 1. Nuomotojas (Landlord)
+**Rolė:** turto savininkas, sukuriantis sutartį ir valdantis uždarymą / užstatą.
 
-**Rolė:** Nekilnojamojo turto savininkas, kuris nori išnuomoti savo turtą.
-
-**Teisės ir Funkcijos:**
-
-- `constructor()` - Sukuria naują nuomos sutartį, nustato sąlygas
-- `completeRental()` - Užbaigia nuomą pasibaigus laikotarpiui
-- `returnDeposit()` - Grąžina užstatą nuomininkui (jei nėra pretenzijų)
-- `raiseDispute()` - Kelia ginčą dėl turto sugadinimo
-- `cancelRental()` - Atšaukia sutartį prieš jos pradžią
+**Pagrindinės funkcijos:**
+- `constructor()` – sukuria sutartį su parametrais
+- `completeRental()` – užbaigia nuomos laikotarpį
+- `returnDeposit()` – grąžina užstatą (jei nėra ginčo)
+- `raiseDispute(reason)` – kelia ginčą
+- `cancelRental()` – atšaukia sutartį iki aktyvavimo
 
 **Finansiniai Srautai:**
 
@@ -61,16 +48,14 @@
 
 ---
 
-### 2. **Nuomininkas (Tenant)**
+### 2. Nuomininkas (Tenant)
+**Rolė:** asmuo, kuris aktyvuoja sutartį, moka nuomą ir gali inicijuoti ginčą.
 
-**Rolė:** Asmuo ar įmonė, kuri nori išsinuomoti nekilnojamąjį turtą.
-
-**Teisės ir Funkcijos:**
-
-- `payDepositAndFirstRent()` - Aktyvuoja sutartį, sumokėdamas užstatą + pirmą nuomą
-- `payMonthlyRent()` - Moka mėnesinę nuomą kas 25+ dienas
-- `completeRental()` - Gali užbaigti nuomą pasibaigus terminui
-- `raiseDispute()` - Kelia ginčą, jei nuomotojas nepagristai nesugrąžina užstato
+**Pagrindinės funkcijos:**
+- `payDepositAndFirstRent()` – sumoka užstatą + pirmą nuomą ir aktyvuoja sutartį
+- `payMonthlyRent()` – atlieka mėnesinį mokėjimą (su laiko taisykle)
+- `completeRental()` – gali užbaigti pasibaigus terminui
+- `raiseDispute(reason)` – kelia ginčą
 
 **Finansiniai Srautai:**
 
@@ -84,22 +69,11 @@
 
 ---
 
-### 3. **Arbitras (Arbiter)** 
+### 3. Arbitras (Arbiter)
+**Rolė:** neutrali trečioji šalis ginčų atveju.
 
-**Rolė:** Nepriklausomas trečiasis asmuo, sprendžiantis ginčus tarp nuomotojo ir nuomininko.
-
-**Teisės ir Funkcijos:**
-
-- `resolveDispute()` - Vienintelė funkcija - nusprendžia užstato paskirstymą
-
-**Sprendimo Logika:**
-
-- Nustato procentinį užstato padalijimą (0-100%)
-- Pavyzdžiui: 70% nuomininkui (mažai žalos), 30% nuomotojui (kompensacija)
-- Galimi variantai:
-  - **100% nuomininkui** - jokios žalos, nuomotojas nepagrįstai laikė užstatą
-  - **50/50** - abejotina situacija, kompromisas
-  - **0% nuomininkui** - rimta žala, visas užstatas nuomotojui
+**Pagrindinė funkcija:**
+- `resolveDispute(tenantPercentage)` – paskirsto užstatą procentais (0–100).
 
 **Atsakomybės:**
 
@@ -127,28 +101,34 @@
 
 ---
 
-## Tipiški Verslo Scenarijai
+## Verslo Scenarijai
 
 ### Sutarties Būsenos (States)
 
-Smart contract naudoja **valstybių mašiną** (State Machine) su šešiomis būsenomis:
+Smart contract naudoja **State machine**:
+
+- `CREATED` – sutartis sukurta, laukia aktyvavimo (deposit + first rent)
+- `ACTIVE` – nuoma aktyvi, vyksta periodiniai mokėjimai
+- `COMPLETED` – nuoma užbaigta (galima grąžinti užstatą arba kelti ginčą)
+- `DISPUTED` – užstatas “užšaldytas”, laukia arbitro sprendimo
+- `CANCELLED` – sutartis atšaukta iki aktyvavimo
 
 ```
-┌─────────┐  payDeposit   ┌────────┐  complete    ┌───────────┐
+┌─────────┐  payDeposit   ┌────────┐  complete     ┌───────────┐
 │ CREATED │──────────────▶│ ACTIVE │─────────────▶│ COMPLETED │
-└─────────┘               └────────┘              └───────────┘
+└─────────┘               └────────┘               └───────────┘
      │                         │                         │
      │ cancel                  │                         │ raiseDispute
      ▼                         │                         ▼
-┌───────────┐                 │                   ┌──────────┐
-│ CANCELLED │                 │                   │ DISPUTED │
-└───────────┘                 │                   └──────────┘
-                              │                         │
-                              │                         │ resolveDispute
-                              ▼                         ▼
-                      ┌────────────────┐        ┌───────────┐
-                      │ PAYMENT_PENDING│        │ COMPLETED │
-                      └────────────────┘        └───────────┘
+┌───────────┐                  │                   ┌──────────┐
+│ CANCELLED │                  │                   │ DISPUTED │
+└───────────┘                  │                   └──────────┘
+                               │                         │
+                               │                         │ resolveDispute
+                               ▼                         ▼
+                       ┌────────────────┐         ┌───────────┐
+                       │ PAYMENT_PENDING│         │ COMPLETED │
+                       └────────────────┘         └───────────┘
 ```
 
 ---
