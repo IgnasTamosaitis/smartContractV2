@@ -471,19 +471,6 @@ Testai apima:
 
 ---
 
-## Front-End Aplikacija
-
-Front-End aplikacija (bus sukurta) leis:
-
-- Prisijungti su MetaMask
-- Kurti naujas nuomos sutartis (nuomotojui)
-- Peržiūrėti sutarties detales
-- Mokėti užstatą ir nuomą (nuomininkui)
-- Valdyti ginčus
-- Matyti transakcijų istoriją
-
----
-
 ## Deployed Smart Contract
 
 ### Sepolia testnet
