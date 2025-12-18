@@ -5,9 +5,9 @@ let contractInstance;
 let contractFactory;
 
 // Deployed Contract Address
-// Ganache Local (Fixed): 0x5FbDB2315678afecb367f032d93F642f64180aa3
+// Ganache Local (FRESH): 0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6
 // Sepolia Testnet: 0xeF9D744ADc74eeC3E8C81F598A0FA93d36CC4515
-const DEPLOYED_CONTRACT_ADDRESS = '0x5FbDB2315678afecb367f032d93F642f64180aa3'; // Using Ganache
+const DEPLOYED_CONTRACT_ADDRESS = '0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6'; // Using Ganache
 
 // Contract ABI - will be loaded from build folder
 const CONTRACT_ABI = [
@@ -440,18 +440,34 @@ async function payDepositAndFirstRent() {
     
     try {
         const info = await contractInstance.methods.getRentalInfo().call();
-        const totalAmount = BigInt(info.deposit) + BigInt(info.monthlyRent);
         
-        showNotification('Processing...', 'Please confirm the transaction', 'info');
+        // Check if caller is tenant
+        if (account.toLowerCase() !== info.tenant.toLowerCase()) {
+            showNotification('Error', `Only Tenant can pay! Current account: ${account.substring(0,10)}... Expected Tenant: ${info.tenant.substring(0,10)}...`, 'error');
+            return;
+        }
+        
+        // Check state
+        const stateNames = ['CREATED', 'ACTIVE', 'PAYMENT_PENDING', 'COMPLETED', 'DISPUTED', 'CANCELLED'];
+        if (info.state !== '0') {
+            showNotification('Error', `Contract must be in CREATED state. Current state: ${stateNames[info.state]}`, 'error');
+            return;
+        }
+        
+        const totalAmount = BigInt(info.deposit) + BigInt(info.monthlyRent);
+        const ethAmount = web3.utils.fromWei(totalAmount.toString(), 'ether');
+        
+        showNotification('Processing...', `Sending ${ethAmount} ETH. Please confirm in MetaMask`, 'info');
         
         await contractInstance.methods.payDepositAndFirstRent().send({
             from: account,
             value: totalAmount.toString()
         });
         
-        showNotification('Success!', 'Deposit and first rent paid successfully', 'success');
+        showNotification('Success!', `Paid ${ethAmount} ETH - Contract is now ACTIVE!`, 'success');
         
     } catch (error) {
+        console.error('Full error:', error);
         showNotification('Error', error.message, 'error');
     }
 }
@@ -466,16 +482,31 @@ async function payMonthlyRent() {
     try {
         const info = await contractInstance.methods.getRentalInfo().call();
         
-        showNotification('Processing...', 'Please confirm the transaction', 'info');
+        // Check if caller is tenant
+        if (account.toLowerCase() !== info.tenant.toLowerCase()) {
+            showNotification('Error', `Only Tenant can pay rent! Switch to Tenant account: ${info.tenant.substring(0,10)}...`, 'error');
+            return;
+        }
+        
+        // Check state
+        const stateNames = ['CREATED', 'ACTIVE', 'PAYMENT_PENDING', 'COMPLETED', 'DISPUTED', 'CANCELLED'];
+        if (info.state !== '1') { // Must be ACTIVE
+            showNotification('Error', `Contract must be ACTIVE. Current state: ${stateNames[info.state]}. First pay deposit!`, 'error');
+            return;
+        }
+        
+        const ethAmount = web3.utils.fromWei(info.monthlyRent, 'ether');
+        showNotification('Processing...', `Sending ${ethAmount} ETH. Please confirm in MetaMask`, 'info');
         
         await contractInstance.methods.payMonthlyRent().send({
             from: account,
             value: info.monthlyRent
         });
         
-        showNotification('Success!', 'Monthly rent paid successfully', 'success');
+        showNotification('Success!', `Paid ${ethAmount} ETH monthly rent!`, 'success');
         
     } catch (error) {
+        console.error('Full error:', error);
         showNotification('Error', error.message, 'error');
     }
 }
@@ -485,9 +516,23 @@ async function completeRental() {
     if (!contractInstance) return;
     
     try {
+        const info = await contractInstance.methods.getRentalInfo().call();
+        const stateNames = ['CREATED', 'ACTIVE', 'PAYMENT_PENDING', 'COMPLETED', 'DISPUTED', 'CANCELLED'];
+        
+        if (info.state !== '1') {
+            showNotification('Error', `Contract must be ACTIVE. Current state: ${stateNames[info.state]}`, 'error');
+            return;
+        }
+        
+        if (account.toLowerCase() !== info.landlord.toLowerCase() && account.toLowerCase() !== info.tenant.toLowerCase()) {
+            showNotification('Error', 'Only Landlord or Tenant can complete rental', 'error');
+            return;
+        }
+        
         await contractInstance.methods.completeRental().send({ from: account });
-        showNotification('Success!', 'Rental completed', 'success');
+        showNotification('Success!', 'Rental completed! Landlord can now return deposit', 'success');
     } catch (error) {
+        console.error('Full error:', error);
         showNotification('Error', error.message, 'error');
     }
 }
@@ -497,6 +542,19 @@ async function returnDeposit() {
     if (!contractInstance) return;
     
     try {
+        const info = await contractInstance.methods.getRentalInfo().call();
+        const stateNames = ['CREATED', 'ACTIVE', 'PAYMENT_PENDING', 'COMPLETED', 'DISPUTED', 'CANCELLED'];
+        
+        if (account.toLowerCase() !== info.landlord.toLowerCase()) {
+            showNotification('Error', `Only Landlord can return deposit! Switch to Landlord: ${info.landlord.substring(0,10)}...`, 'error');
+            return;
+        }
+        
+        if (info.state !== '3') {
+            showNotification('Error', `Contract must be COMPLETED. Current state: ${stateNames[info.state]}`, 'error');
+            return;
+        }
+        
         await contractInstance.methods.returnDeposit().send({ from: account });
         showNotification('Success!', 'Deposit returned to tenant', 'success');
     } catch (error) {
@@ -508,9 +566,22 @@ async function returnDeposit() {
 async function cancelRental() {
     if (!contractInstance) return;
     
-    if (!confirm('Are you sure you want to cancel this rental contract?')) return;
-    
     try {
+        const info = await contractInstance.methods.getRentalInfo().call();
+        const stateNames = ['CREATED', 'ACTIVE', 'PAYMENT_PENDING', 'COMPLETED', 'DISPUTED', 'CANCELLED'];
+        
+        if (account.toLowerCase() !== info.landlord.toLowerCase()) {
+            showNotification('Error', `Only Landlord can cancel! Switch to Landlord: ${info.landlord.substring(0,10)}...`, 'error');
+            return;
+        }
+        
+        if (info.state !== '0') {
+            showNotification('Error', `Can only cancel CREATED contracts. Current state: ${stateNames[info.state]}`, 'error');
+            return;
+        }
+        
+        if (!confirm('Are you sure you want to cancel this rental contract?')) return;
+        
         await contractInstance.methods.cancelRental().send({ from: account });
         showNotification('Success!', 'Rental cancelled', 'success');
     } catch (error) {

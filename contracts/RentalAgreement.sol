@@ -201,9 +201,11 @@ contract RentalAgreement {
      * @dev Pradėti ginčą (gali nuomotojas arba nuomininkas)
      * @param _reason Ginčo priežastis
      */
-    function raiseDispute(
-        string memory _reason
-    ) external inState(State.COMPLETED) {
+    function raiseDispute(string memory _reason) external {
+        require(
+            rental.state == State.ACTIVE || rental.state == State.COMPLETED,
+            "Can only raise dispute when active or completed"
+        );
         require(
             msg.sender == rental.landlord || msg.sender == rental.tenant,
             "Only landlord or tenant can raise dispute"

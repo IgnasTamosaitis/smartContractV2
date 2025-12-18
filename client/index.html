@@ -77,28 +77,38 @@
         <div id="manageTab" class="tab-content">
             <div class="card">
                 <h2>Manage Rental Contract</h2>
-                <p class="deployed-info">
-                    <strong>✅ Deployed:</strong> 
-                    <a href="https://sepolia.etherscan.io/address/0xeF9D744ADc74eeC3E8C81F598A0FA93d36CC4515" target="_blank">
-                        0xeF9D744ADc74eeC3E8C81F598A0FA93d36CC4515
-                    </a>
+                <p class="deployed-info" style="background: #fef3c7; border-left: 4px solid #f59e0b;">
+                    <strong>🧪 Ganache Local:</strong> 
+                    <code>0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6</code>
+                    <br><small style="color: #92400e;">State: CREATED (šviežias contract!)</small>
                 </p>
-                <p class="description">📝 <strong>Step 1:</strong> Connect MetaMask → <strong>Step 2:</strong> Click "Load Contract"</p>
+                <p class="description" style="background: #dbeafe; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                    📝 <strong>Step 1:</strong> Connect MetaMask → <strong>Step 2:</strong> Click "Load Contract"<br>
+                    🔄 <strong>Need Fresh Contract?</strong> Run: <code style="background: #1e293b; color: #fff; padding: 2px 6px; border-radius: 3px;">.\deploy-new-contract.ps1</code>
+                </p>
                 
                 <div class="form-group">
                     <label>Contract Address:</label>
-                    <input type="text" id="contractAddress" placeholder="0x..." value="0xeF9D744ADc74eeC3E8C81F598A0FA93d36CC4515">
+                    <input type="text" id="contractAddress" placeholder="0x..." value="0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6">
                     <button id="loadContractBtn" class="btn btn-primary">Load Contract</button>
                 </div>
                 
                 <div id="contractActions" class="hidden">
                     <hr>
                     
+                    <!-- Important Notice -->
+                    <div class="status-info" style="background: #fff3cd; border-left: 4px solid #ffc107; margin-bottom: 20px;">
+                        <strong>⚠️ SVARBU:</strong> Prieš naudojant kitas funkcijas, <strong>Tenant</strong> turi sumokėti 
+                        <strong>0.03 ETH</strong> (Deposit: 0.02 ETH + First Rent: 0.01 ETH)
+                    </div>
+                    
                     <!-- Tenant Actions -->
                     <div class="action-section">
                         <h3>👤 Tenant Actions</h3>
-                        <button id="payDepositBtn" class="btn btn-warning">Pay Deposit + First Rent</button>
-                        <button id="payRentBtn" class="btn btn-info">Pay Monthly Rent</button>
+                        <p style="color: #d97706; font-weight: bold;">⬇️ START HERE (Step 1):</p>
+                        <button id="payDepositBtn" class="btn btn-warning">💰 Pay Deposit + First Rent (0.03 ETH)</button>
+                        <p style="color: #666; font-size: 0.9em; margin-top: 5px;">⏰ Then wait 25+ days to pay next rent</p>
+                        <button id="payRentBtn" class="btn btn-info">📅 Pay Monthly Rent (0.01 ETH)</button>
                     </div>
                     
                     <!-- Landlord Actions -->
@@ -132,16 +142,15 @@
         <div id="viewTab" class="tab-content">
             <div class="card">
                 <h2>View Contract Details</h2>
-                <p class="deployed-info">
-                    <strong>✅ Deployed Contract:</strong> 
-                    <a href="https://sepolia.etherscan.io/address/0xeF9D744ADc74eeC3E8C81F598A0FA93d36CC4515" target="_blank">
-                        0xeF9D744ADc74eeC3E8C81F598A0FA93d36CC4515
-                    </a>
+                <p class="deployed-info" style="background: #fef3c7; border-left: 4px solid #f59e0b;">
+                    <strong>🧪 Ganache Local:</strong> 
+                    <code>0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6</code>
+                    <br><small style="color: #92400e;">State: CREATED (šviežias contract!)</small>
                 </p>
                 
                 <div class="form-group">
                     <label>Contract Address:</label>
-                    <input type="text" id="viewContractAddress" placeholder="0x..." value="0xeF9D744ADc74eeC3E8C81F598A0FA93d36CC4515">
+                    <input type="text" id="viewContractAddress" placeholder="0x..." value="0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6">
                     <button id="viewContractBtn" class="btn btn-primary">View Details</button>
                 </div>
                 
